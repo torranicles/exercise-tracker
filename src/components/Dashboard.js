@@ -15,8 +15,7 @@ class Dashboard extends React.Component {
             newSubmit: null,
             message: null,
             loading: true,
-            exercises: [],
-            updates: []
+            exercises: []
         }
         this.handleLogout = this.handleLogout.bind(this);
         this.handleNewSubmit = this.handleNewSubmit.bind(this);
@@ -26,6 +25,7 @@ class Dashboard extends React.Component {
         this.confirmDelete = this.confirmDelete.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
+        this.cancelDelete = this.cancelDelete.bind(this);
     }
     
     handleEdit(e) {
@@ -37,7 +37,7 @@ class Dashboard extends React.Component {
             this.setState({
                 newSubmit: false,
                 _id: e.target.id,
-                updates: res.data.log
+                ...res.data.log[0]
             })
         })
     }
@@ -59,7 +59,13 @@ class Dashboard extends React.Component {
                 this.setState({
                     message: res.data
                 });
-                this.getExercises()
+                this.getExercises();
+                setTimeout(() => {
+                    this.setState({
+                        message: null
+                    });
+                    document.getElementById('form').reset();
+                }, 2000);
             }
         })
     }
@@ -101,6 +107,11 @@ class Dashboard extends React.Component {
             })
     }
 
+    cancelDelete() {
+        document.getElementById('confirm-delete')
+        .classList.add('d-none');
+    }
+
     handleLogout() {
          //TODO : Transfer logic to server
         axios.get('/logout')
@@ -129,7 +140,13 @@ class Dashboard extends React.Component {
                     this.getExercises();
                     this.setState({
                         message: res.data.message
-                    })
+                    });
+                    setTimeout(() => {
+                        this.setState({
+                            message: null
+                        })
+                    }, 2000);
+                    document.getElementById('form').reset();
                 }
             })
             .catch(err => console.log("Add error", err))
@@ -150,8 +167,7 @@ class Dashboard extends React.Component {
     }
 
     render() {
-        const {newSubmit, loading, message, exercises, updates} = this.state;
-        console.log(newSubmit)
+        const {description, duration, date, newSubmit, loading, message, exercises} = this.state;
         return (
             <div>
                 <nav className="navbar navbar-expand-md navbar-dark">
@@ -169,67 +185,63 @@ class Dashboard extends React.Component {
                 </nav>
                 <br/>
                 <div className="container-md w-50 view-container d-flex justify-content-center">
-                    <div className="container-md w-100 bg-light p-0">
-                            <div className="container-md justify-content-center flex-column w-100 bg-dark data-container" style={{overflowY: "auto"}}>
+                    <div className="container-md w-100 p-0">
+                            <div className="container-md justify-content-center flex-column w-100 p-3 data-container">
                                 {
                                     loading 
                                     ? <Loader/>
                                     :
                                     exercises
                                     ? exercises.map(el => 
-                                        <div className="mini-container mx-1 my-3 row p-3" key={el._id}>
-                                            <div className="col-md-10 p-0">
-                                                <h3>Description: {el.description}</h3>
-                                                Duration: {el.duration}
+                                        <div className="mini-container m-4 row p-3" key={el._id}>
+                                            <div className="col-md-11 p-0">
+                                                <h3>{el.description}</h3>
+                                                {el.duration} mins.
                                                 <br/>
-                                                Date: {el.date}
+                                                {new Date(el.date).toDateString()}
                                             </div>
-                                            <div className="col-md-2 p-0">
-                                                <i 
-                                                    className="far fa-trash-alt" 
-                                                    id={el._id} 
-                                                    onClick={this.confirmDelete}/>
+                                            <div className="col-md-1 p-0 d-flex flex-column justify-content-around align-items-center">
                                                 <i 
                                                     className="far fa-edit" 
                                                     data-toggle="modal" 
                                                     data-target="#AddOrEdit" 
                                                     id={el._id} 
                                                     onClick={this.handleEdit}/>
+                                                <i 
+                                                    className="far fa-trash-alt" 
+                                                    id={el._id} 
+                                                    onClick={this.confirmDelete}/>
                                             </div>
                                         </div>
                                     )
                                     : null
                                 }
                             </div>
-                            <div className="row m-0 pt-4 pl-3">
+                            <div className="row m-0 pt-4 bg-dark p-3">
                                 <div className="col-md-6 btn-group">
                                     <button 
                                         onClick={this.handleAdd}
-                                        className="btn btn-dark" 
+                                        className="btn btn-light" 
                                         data-toggle="modal" 
                                         data-target="#AddOrEdit">Add exercise</button>
                                     <button className="btn btn-danger" onClick={this.confirmDelete}>Delete all</button>
                                 </div>
-                                <div className="col-md-6">
-                                    <div>
+                                <div className="col-md-6 d-flex justify-content-center">
+                                    <div className="text-white">
                                         {
-                                            message
+                                            message == "Exercise deleted"
                                             ? message
                                             : null
                                         }
                                     </div>
                                     <div className="d-none" id="confirm-delete">
-                                        <button className="btn btn-outline-danger" onClick={this.handleDelete}>Delete</button>
-                                        <span>Cancel</span>
+                                        <button className="btn btn-outline-danger mx-3" onClick={this.handleDelete}>Delete</button>
+                                        <span onClick={this.cancelDelete} className="text-white">Cancel</span>
                                     </div>
                                 </div>
                             </div>
                             <AddOrDelete
-                                header={
-                                    newSubmit
-                                    ? "New exercise"
-                                    : "Edit exercise"
-                                }
+                                newSubmit={newSubmit}
                                 handleSubmit={
                                     newSubmit
                                     ? this.handleNewSubmit
@@ -237,9 +249,9 @@ class Dashboard extends React.Component {
                                 }
                                 handleChange={this.handleChange}
                                 message={message}
-                                duration={updates.map(e => e.duration)} //Can be improved?
-                                description={updates.map(e => e.description)}
-                                date={updates.map(e => e.date)}
+                                duration={duration} 
+                                description={description}
+                                date={date}
                             />
                     </div>
                 </div>

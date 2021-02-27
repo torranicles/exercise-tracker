@@ -146,7 +146,7 @@ module.exports = (app) => {
     })
 
     app.get('/exercise/log', ensureAuthenticated, (req, res) => {
-        let {fromDate, toDate, limit, exerciseId} = req.query;
+        let {exerciseId} = req.query;
         Exercise.find(
             exerciseId
             ? {
@@ -154,44 +154,17 @@ module.exports = (app) => {
             }
             : {
                 userId: req.user._id
-            }, (err, exercise) => {
+            }
+        ).sort({
+            date: 1
+        }).exec((err, exercise) => {
             if (err) {
                 console.log(err);
                 throw new Error('An error occured. Please try again.')
             } else {
-                if (exercise) {
-                    let totalCount = 0;
-                    let logArr = [];
-                    let fromObj = new Date(fromDate);
-                    let toObj = new Date(toDate);
-
-                    for (let i = 0; i < exercise.length; i++) {
-                        if (totalCount == limit) {
-                            break
-                        }
-
-                        const data = {
-                            _id: exercise[i]._id,
-                            description: exercise[i].description,
-                            duration: exercise[i].duration,
-                            date:exercise[i].date.toUTCString()
-                        };
-
-                        if (exercise[i].date >= fromObj && exercise[i].date <= toObj) { //Date range
-                            totalCount += 1;
-                            logArr.push(data);
-                        } else if (exercise[i].date >= fromObj && !toDate) { //Results from given 'from' date
-                            totalCount += 1;
-                            logArr.push(data)
-                        } else if (!fromDate && !toDate) { //All results
-                            totalCount += 1;
-                            logArr.push(data)
-                        }
-                    }
-                    res.send({
-                        log: logArr
-                    })
-                }
+                res.send({
+                    log: exercise
+                })
             }
         })
     })

@@ -4,29 +4,40 @@ const AddOrDelete = (props) => {
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h4 className="modal-title">{props.header}</h4>
+                        <h4 className="modal-title">
+                            {
+                                props.newSubmit
+                                ? "New exercise"
+                                : "Edit exercise"
+                            }
+                        </h4>
                         <button type="button" className="close" data-dismiss="modal">×</button>
                     </div>
                     <div className="modal-body">
-                        <form onSubmit={props.handleSubmit}>
+                        <form onSubmit={props.handleSubmit} id="form">
                             <div className="form-group p-1">
                                 <label for="description">Description:</label>
                                 <input onChange={props.handleChange} 
                                     type="text" 
                                     name="description" 
                                     className="form-control"
-                                    placeholder={props.description}
+                                    value={
+                                        !props.newSubmit
+                                        ? props.description
+                                        : null
+                                    }
                                 />
                             </div>
                             <div className="form-group p-1">
                                 <label for="duration">Duration:</label>
                                 <input onChange={props.handleChange} 
-                                    type="text" name="duration" 
+                                    type="text" 
+                                    name="duration" 
                                     className="form-control" 
-                                    placeholder={
-                                        props.duration 
+                                    value={
+                                        !props.newSubmit 
                                         ? props.duration 
-                                        : "minutes"
+                                        : null
                                     }
                                     />
                             </div>
@@ -36,19 +47,25 @@ const AddOrDelete = (props) => {
                                     type="text" 
                                     name="date" 
                                     className="form-control" 
-                                    placeholder={
-                                        props.date
-                                        ? props.date
+                                    value={
+                                        !props.newSubmit
+                                        ? new Date(props.date).toLocaleDateString()
                                         : "yyyy-mm-dd"
                                         }
                                         />
                             </div>
-                            <button type="submit">submit</button>
+                            <div className="text-center">
+                                <button type="submit" className="btn btn-primary">Submit</button>
+                            </div>
                         </form>
                     </div>
                     <div className="modal-footer">
-                        {props.message ? <span>{props.message}</span> : null} 
-                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                        {
+                            props.message 
+                            ? <div className="float-left"><span>{props.message}</span></div>
+                            : null
+                        } 
+                        <button type="button" className="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>

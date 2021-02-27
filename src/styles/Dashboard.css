@@ -16,6 +16,8 @@
 .data-container {
   height: 85%;
   border-top-left-radius: .5rem;
+  overflow-y: auto;
+  background-color: #343a40a8;
 }
 
 .view-container > div {
@@ -25,6 +27,16 @@
 .mini-container {
   background-color: white;
   border-radius: .25rem;
+}
+
+.row {
+  border-bottom-left-radius: .5rem;
+  border-bottom-right-radius: .5rem;
+}
+
+i {
+  font-size: 1.25rem;
+  cursor: pointer;
 }
 
 ::-webkit-scrollbar {
