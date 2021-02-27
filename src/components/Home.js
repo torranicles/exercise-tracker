@@ -5,7 +5,7 @@ import Register from './Register'
 class Home extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
+        this.state = { //move to App.js
             viewReg: false
         }
         this.handleClick = this.handleClick.bind(this);
@@ -24,6 +24,12 @@ class Home extends React.Component {
         console.log(this.state)
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.logged_in != prevProps) {
+            this.props.history.push('/dashboard')
+        }
+        return;
+    }
     render() {
         return (
             <div className="container-fluid">

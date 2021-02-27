@@ -118,7 +118,6 @@ class Dashboard extends React.Component {
             .then(res => {
                 if (res.data == "Logged out") {
                     this.props.history.push('/');
-                    sessionStorage.clear();
                 }
             })
             .catch(err => {

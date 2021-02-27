@@ -3,14 +3,17 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Home from './components/Home'
 import Dashboard from './components/Dashboard'
 import axios from 'axios'
-import { ProtectedRoute } from './components/protected.route'
+import ProtectedRoute from './components/protected.route'
+import { withRouter } from "react-router"
+import Loader from './components/Loader'
 
 class App extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
           username: '',
-          logged_in: false
+          logged_in: false,
+          loading: true
       }
       this.handleLogin = this.handleLogin.bind(this);
     }
@@ -28,11 +31,13 @@ class App extends React.Component {
             .then(res => {
                 if (res.data.logged_in && this.state.logged_in == false) {
                     this.setState({
-                        logged_in: true
-                    })
+                        logged_in: true,
+                        loading: false
+                    });
                 } else if (!res.data.logged_in) {
                     this.setState({
-                        logged_in: false
+                        logged_in: false,
+                        loading: false
                     });
                 }
             })
@@ -42,17 +47,22 @@ class App extends React.Component {
     componentDidMount(){
         this.checkLoginStatus()
     }
+
     render() {
         return (
             <Router>
                 <Switch>
-                    <Route exact path="/" render={props => {
+                    {
+                        this.state.loading
+                        ? <Loader/>
+                        : <Route exact path="/" render={props => {
                             return <Home 
-                            {...props}
-                            handleLogin={this.handleLogin}
-                            />
-                        } 
-                    }/>
+                                {...props}
+                                logged_in={this.state.logged_in}
+                                handleLogin={this.handleLogin}
+                            />} 
+                        }/>
+                    }
                     <ProtectedRoute login={this.state.logged_in} path="/dashboard" component={Dashboard}/>
                     </Switch>
             </Router>
@@ -60,4 +70,4 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default withRouter(App);

@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
-import axios from 'axios'
-import auth from './auth'
 
-export const ProtectedRoute = ({component: Component, login, ...rest}) => {
-    return (
-        <Route {...rest}
+export default class ProtectedRoute extends React.Component {
+
+    componentDidUpdate(prevProps) {
+        if (this.props.login != prevProps) {
+            return this.props.login;
+        }
+    }
+    render() {
+        const {component: Component, ...rest} = this.props;
+        return (
+            <Route {...rest}
             render={props => {
-                    if (login || sessionStorage.getItem('logged_in')) {
-                        sessionStorage.setItem('logged_in', true); //set on inital connection
+                    if (this.props.login) {
                         return <Component {...props}/>
                     } else { 
                         return (
@@ -23,5 +28,6 @@ export const ProtectedRoute = ({component: Component, login, ...rest}) => {
                     }
             }}
         />
-    )
+        )
+    }
 }
