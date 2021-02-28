@@ -16,6 +16,7 @@ class App extends React.Component {
           loading: true
       }
       this.handleLogin = this.handleLogin.bind(this);
+      this.handleLogout = this.handleLogout.bind(this);
     }
     
     handleLogin(data) {
@@ -24,6 +25,20 @@ class App extends React.Component {
             logged_in: true
         })
         console.log(this.state,"2")
+    }
+
+    handleLogout() {
+        axios.get('/logout')
+            .then(res => {
+                if (res.data == "Logged out") {
+                    this.setState({
+                        logged_in: false
+                    })
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
     
     checkLoginStatus() {
@@ -47,7 +62,6 @@ class App extends React.Component {
     componentDidMount(){
         this.checkLoginStatus()
     }
-
     render() {
         return (
             <Router>
@@ -63,7 +77,12 @@ class App extends React.Component {
                             />} 
                         }/>
                     }
-                    <ProtectedRoute login={this.state.logged_in} path="/dashboard" component={Dashboard}/>
+                    <ProtectedRoute 
+                        handleLogout={this.handleLogout} 
+                        logged_in={this.state.logged_in} 
+                        path="/dashboard" 
+                        component={Dashboard}
+                    />
                     </Switch>
             </Router>
         )

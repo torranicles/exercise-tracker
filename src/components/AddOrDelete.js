@@ -21,6 +21,7 @@ const AddOrDelete = (props) => {
                                     type="text" 
                                     name="description" 
                                     className="form-control"
+                                    required
                                     value={
                                         !props.newSubmit
                                         ? props.description
@@ -34,9 +35,11 @@ const AddOrDelete = (props) => {
                                     type="text" 
                                     name="duration" 
                                     className="form-control" 
+                                    placeholder="minutes"
+                                    required
                                     value={
                                         !props.newSubmit 
-                                        ? props.duration 
+                                        ? props.duration
                                         : null
                                     }
                                     />
@@ -47,12 +50,14 @@ const AddOrDelete = (props) => {
                                     type="text" 
                                     name="date" 
                                     className="form-control" 
+                                    placeholder="yyyy-mm-dd"
                                     value={
-                                        !props.newSubmit
-                                        ? new Date(props.date).toLocaleDateString()
-                                        : "yyyy-mm-dd"
-                                        }
-                                        />
+                                        !props.newSubmit 
+                                        ? props.date.slice(0,10)
+                                        : null
+                                    }
+                                /> 
+                                {/* Value for date */}
                             </div>
                             <div className="text-center">
                                 <button type="submit" className="btn btn-primary">Submit</button>

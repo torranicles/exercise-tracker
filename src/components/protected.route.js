@@ -2,10 +2,9 @@ import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 
 export default class ProtectedRoute extends React.Component {
-
     componentDidUpdate(prevProps) {
-        if (this.props.login != prevProps) {
-            return this.props.login;
+        if (this.props.logged_in != prevProps) {
+            return this.props.logged_in;
         }
     }
     render() {
@@ -13,8 +12,8 @@ export default class ProtectedRoute extends React.Component {
         return (
             <Route {...rest}
             render={props => {
-                    if (this.props.login) {
-                        return <Component {...props}/>
+                    if (this.props.logged_in) {
+                        return <Component {...props} handleLogout={this.props.handleLogout}/>
                     } else { 
                         return (
                             <Redirect to={{

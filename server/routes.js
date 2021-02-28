@@ -129,6 +129,7 @@ module.exports = (app) => {
     })
 
     app.delete('/delete', ensureAuthenticated, (req, res) => {
+        //TO DO: fix delete all
         Exercise.deleteMany(
             req.query.id 
             ? {_id: req.query.id}

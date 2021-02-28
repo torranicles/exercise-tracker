@@ -17,19 +17,19 @@ class Home extends React.Component {
     }
 
     handleClick(e) {
-        e.preventDefault(); //changing form component is not acknowledged if missing
+        e.preventDefault();
         this.setState({
             viewReg: !this.state.viewReg
         })
         console.log(this.state)
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.logged_in != prevProps) {
+    componentDidMount() {
+        if (this.props.logged_in) {
             this.props.history.push('/dashboard')
         }
-        return;
     }
+    
     render() {
         return (
             <div className="container-fluid">

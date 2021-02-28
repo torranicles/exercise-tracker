@@ -17,7 +17,6 @@ class Dashboard extends React.Component {
             loading: true,
             exercises: []
         }
-        this.handleLogout = this.handleLogout.bind(this);
         this.handleNewSubmit = this.handleNewSubmit.bind(this);
         this.handleEditSubmit = this.handleEditSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -74,6 +73,7 @@ class Dashboard extends React.Component {
         this.setState({
             newSubmit: true
         })
+        document.getElementById('form').reset();
     }
 
     confirmDelete(e) {
@@ -110,19 +110,6 @@ class Dashboard extends React.Component {
     cancelDelete() {
         document.getElementById('confirm-delete')
         .classList.add('d-none');
-    }
-
-    handleLogout() {
-         //TODO : Transfer logic to server
-        axios.get('/logout')
-            .then(res => {
-                if (res.data == "Logged out") {
-                    this.props.history.push('/');
-                }
-            })
-            .catch(err => {
-                console.log(err)
-            })
     }
 
     handleChange(e) {
@@ -167,6 +154,8 @@ class Dashboard extends React.Component {
 
     render() {
         const {description, duration, date, newSubmit, loading, message, exercises} = this.state;
+        
+        console.log(description, duration, date)
         return (
             <div>
                 <nav className="navbar navbar-expand-md navbar-dark">
@@ -177,7 +166,7 @@ class Dashboard extends React.Component {
                     <div className="collapse navbar-collapse flex-row-reverse" id="collapsibleNavbar">
                         <ul className="navbar-nav">
                             <li className="nav-item">
-                                <button onClick={this.handleLogout} className="btn btn-link text-white">Logout</button>
+                                <button onClick={this.props.handleLogout} className="btn btn-link text-white">Logout</button>
                             </li>
                         </ul>
                     </div>  
