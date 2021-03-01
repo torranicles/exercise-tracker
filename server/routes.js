@@ -38,6 +38,8 @@ module.exports = (app) => {
             if (err) {
                 console.log(err);
                 throw new Error('An error occured. Please try again.')
+            } else if (user) {
+                return res.send(['Username already taken.'])
             } else {
                 const hash = bcrypt.hashSync(password, 12);
                 new User({
@@ -49,8 +51,11 @@ module.exports = (app) => {
                         : password // will throw an error under validation/will not be saved
                 })
                 .save((err, doc) => {
-                    if (err.name === 'ValidationError') {
+                    if (err.name == 'ValidationError') {
                         res.send(Object.values(err.errors).map(val => val.message))
+                    } else if (err) {
+                        console.log(err)
+                        res.send(["An error occured, please try again."])
                     } else {
                         next(null, doc)
                     }
@@ -73,7 +78,15 @@ module.exports = (app) => {
             if (!user) { 
                 return res.send("Invalid username or password"); 
             } else {
-                res.send({username: req.user.username, logged_in: true})
+                req.login(user, (err) => {
+                    if (err) {
+                        return next(err);
+                    }
+                    return res.send({
+                        username: req.user.username, 
+                        logged_in: true
+                    })
+                })
             }
         }) (req,res,next);
     })
