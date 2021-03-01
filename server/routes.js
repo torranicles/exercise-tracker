@@ -51,11 +51,15 @@ module.exports = (app) => {
                         : password // will throw an error under validation/will not be saved
                 })
                 .save((err, doc) => {
-                    if (err.name == 'ValidationError') {
-                        res.send(Object.values(err.errors).map(val => val.message))
-                    } else if (err) {
-                        console.log(err)
-                        res.send(["An error occured, please try again."])
+                    if (err) {
+                        if (err.name == 'ValidationError') {
+                            console.log(Object.values(err.errors).map(val => val.message))
+                            return res.send(Object.values(err.errors).map(val => val.message))
+                        }
+                        return res.status(500)
+                                .send({
+                                    message: "An error occured, please try again"
+                                })
                     } else {
                         next(null, doc)
                     }
@@ -114,10 +118,22 @@ module.exports = (app) => {
                             : new Date(date)
                     }).save((err, exercise) => {
                         if (err) {
-                            console.log(err);
+                            if (err.name == 'CastError' && err['message'].includes('Cast to Number')) {
+                                return res.send({
+                                    failureMessage: "Invalid duration"
+                                })
+                            } else if (err['message'].includes('Cast to Date')) {
+                                return res.send({
+                                    failureMessage: "Invalid date"
+                                })
+                            } else if (err.name == 'ValidationError') {
+                                res.send({
+                                    failureMessage: Object.values(err.errors).map(val => val.message)
+                                })
+                            }
                             res.status(500)
                                 .send({
-                                    message: "An error occured, please try again"
+                                    failureMessage: "An error occured, please try again"
                                 })
                         }
                         res.send({
@@ -141,13 +157,21 @@ module.exports = (app) => {
             new: true
         }, (err, doc) => {
             if (err) {
-                console.log(err);
-                res.status(500)
+                if (err.name == 'CastError' && err['message'].includes('Cast to Number')) {
+                    return res.send({
+                        message: "Invalid duration"
+                    })
+                } else if (err['message'].includes('Cast to date')) {
+                    return res.send({
+                        message: "Invalid date"
+                    })
+                }
+                return res.status(500)
                     .send({
                         message: "An error occured, please try again"
                     })
             } else {
-                res.send("Exercise edited")
+                return res.send("Exercise edited")
             }
         })
     })

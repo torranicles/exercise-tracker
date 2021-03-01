@@ -44,6 +44,7 @@ class Login extends React.Component {
     render() {
         const text ={
             textDecoration: "none",
+            fontSize: '1.25rem'
         }
         return (
             <div className="container-md">
@@ -64,7 +65,7 @@ class Login extends React.Component {
                             className="form-control" 
                             name="password"/>
                     </div>
-                    <span className="float-right">
+                    <span className="float-right text-danger">
                         {this.state.message}
                     </span>
                     <br/>

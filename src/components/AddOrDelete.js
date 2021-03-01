@@ -64,13 +64,14 @@ const AddOrDelete = (props) => {
                             </div>
                         </form>
                     </div>
-                    <div className="modal-footer">
-                        {
-                            props.message 
-                            ? <div className="float-left"><span>{props.message}</span></div>
-                            : null
-                        } 
-                        <button type="button" className="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                    <div className="p-3">
+                        <span className="float-left text-success">
+                            {props.successMessage}
+                        </span>
+                        <span className="float-left text-danger">
+                            {props.failureMessage}
+                        </span>
+                        <button type="button" className="btn btn-outline-secondary float-right" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>

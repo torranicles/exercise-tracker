@@ -88,7 +88,7 @@ class Register extends React.Component {
                     <button className="btn btn-link" style={back} onClick={this.props.handleClick}>
                         <i className="fas fa-arrow-left float-left"/>
                     </button>
-                    <span className="float-right">
+                    <span className="float-right text-danger">
                         {this.state.message}
                     </span>
                 </form>

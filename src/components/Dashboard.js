@@ -13,7 +13,8 @@ class Dashboard extends React.Component {
             date: '',
             _id: null,
             newSubmit: null,
-            message: null,
+            successMessage: null,
+            failMessage: null,
             loading: true,
             exercises: []
         }
@@ -42,7 +43,6 @@ class Dashboard extends React.Component {
     }
 
     handleEditSubmit(e) {
-        console.log(this.state._id)
         e.preventDefault();
         let {description, duration, date} = this.state;
         axios.put('/edit', {
@@ -54,18 +54,23 @@ class Dashboard extends React.Component {
                 id: this.state._id
             }
         }).then(res => {
-            if (res.data == "Exercise edited") {
+            if (res.data.message) { //Failure
                 this.setState({
-                    message: res.data
+                    failureMessage: res.data.message
+                })
+            } else { //Success
+                this.setState({ 
+                    successMessage: res.data
                 });
                 this.getExercises();
-                setTimeout(() => {
-                    this.setState({
-                        message: null
-                    });
-                    document.getElementById('form').reset();
-                }, 2000);
             }
+            setTimeout(() => {
+                this.setState({
+                    failureMessage: null,
+                    successMessage: null
+                });
+                document.getElementById('form').reset();
+            }, 2500);
         })
     }
 
@@ -90,18 +95,17 @@ class Dashboard extends React.Component {
                 id: this.state._id
             }})
             .then(res => {
-                console.log(res)
                 if (res.data == "Exercise deleted") {
                     this.setState({
-                        message: res.data
+                        successMessage: res.data
                     });
                     this.getExercises();
                 }
                 setTimeout(() => {
                     this.setState({
-                        message: null
+                        successMessage: null
                     })
-                }, 2000);
+                }, 2500);
                 document.getElementById('confirm-delete')
                     .classList.add('d-none');
             })
@@ -122,16 +126,21 @@ class Dashboard extends React.Component {
         e.preventDefault();
         axios.post('/exercise/add', this.state)
             .then(res => {
-                if (res.data.message) {
+                if (res.data.failureMessage) { //Failure
+                    this.setState({
+                        failureMessage: res.data.failureMessage
+                    })
+                } else {  //Success
                     this.getExercises();
                     this.setState({
-                        message: res.data.message
+                        successMessage: res.data.message
                     });
                     setTimeout(() => {
                         this.setState({
-                            message: null
+                            failureMessage: null,
+                            successMessage: null
                         })
-                    }, 2000);
+                    }, 2500);
                     document.getElementById('form').reset();
                 }
             })
@@ -153,7 +162,7 @@ class Dashboard extends React.Component {
     }
 
     render() {
-        const {description, duration, date, newSubmit, loading, message, exercises} = this.state;
+        const {description, duration, date, newSubmit, loading, successMessage, failureMessage, exercises} = this.state;
         
         console.log(description, duration, date)
         return (
@@ -216,11 +225,7 @@ class Dashboard extends React.Component {
                                 </div>
                                 <div className="col-md-6 d-flex justify-content-center">
                                     <div className="text-white">
-                                        {
-                                            message == "Exercise deleted"
-                                            ? message
-                                            : null
-                                        }
+                                        {successMessage}
                                     </div>
                                     <div className="d-none" id="confirm-delete">
                                         <button className="btn btn-outline-danger mx-3" onClick={this.handleDelete}>Confirm</button>
@@ -236,7 +241,8 @@ class Dashboard extends React.Component {
                                     : this.handleEditSubmit
                                 }
                                 handleChange={this.handleChange}
-                                message={message}
+                                failureMessage={failureMessage}
+                                successMessage={successMessage}
                                 duration={duration} 
                                 description={description}
                                 date={date}
