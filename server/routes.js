@@ -38,22 +38,19 @@ module.exports = (app) => {
             if (err) {
                 console.log(err);
                 throw new Error('An error occured. Please try again.')
-            } else if (user) { 
-                res.send({
-                    error: 'Username already taken.'
-                })
             } else {
-                console.log('new user')
                 const hash = bcrypt.hashSync(password, 12);
                 new User({
                     first_name: first_name,
                     last_name: last_name,
                     username: username,
-                    password: hash
+                    password: password.length >= 6 
+                        ? hash
+                        : password // will throw an error under validation/will not be saved
                 })
                 .save((err, doc) => {
-                    if (err) {
-                        console.log(err)
+                    if (err.name === 'ValidationError') {
+                        res.send(Object.values(err.errors).map(val => val.message))
                     } else {
                         next(null, doc)
                     }
@@ -61,12 +58,26 @@ module.exports = (app) => {
             }
         })
     }, passport.authenticate('local'), (req, res) => {
-        res.send({username: req.user.username, logged_in: true})
+        res.send({
+            username: req.user.username, 
+            logged_in: true
+        })
     });
 
-    app.post('/api/login', passport.authenticate('local'), (req, res) => {
-        res.send({username: req.user.username, logged_in: true})
-    }); //TO DO: Delete?
+    app.post('/api/login', (req, res, next) => {
+        passport.authenticate('local', (err, user, info) => {
+            if (err) { 
+                console.log(err)
+                return next(err); 
+            }
+            if (!user) { 
+                return res.send("Invalid username or password"); 
+            } else {
+                res.send({username: req.user.username, logged_in: true})
+            }
+        }) (req,res,next);
+    })
+        
 
     app.get('/logout', (req, res) => {
         req.logout();

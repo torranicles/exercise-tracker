@@ -8,7 +8,8 @@ class Register extends React.Component {
             first_name: '',
             last_name: '',
             username: '',
-            password: ''
+            password: '',
+            message: ''
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -26,7 +27,10 @@ class Register extends React.Component {
                 console.log(res)
                 if (res.data.username == this.state.username) {
                     this.props.handleSuccessAuth(res.data)
-                    sessionStorage.setItem('logged_in', res.data.logged_in)
+                } else {
+                    this.setState({
+                        message: res.data[0]
+                    })
                 }
             })
             .catch(err => console.log("Registration error", err))
@@ -47,6 +51,7 @@ class Register extends React.Component {
                             onChange={this.handleChange} 
                             className="form-control" 
                             name="first_name"
+                            required
                         />
                     </div>
                     <div className="form-group p-1">
@@ -55,6 +60,7 @@ class Register extends React.Component {
                             onChange={this.handleChange} 
                             className="form-control" 
                             name="last_name"
+                            required
                         />
                     </div>
                     <div className="form-group p-1">
@@ -63,6 +69,7 @@ class Register extends React.Component {
                             onChange={this.handleChange} 
                             className="form-control" 
                             name="username"
+                            required
                         />
                     </div>
                     <div className="form-group p-1">
@@ -71,12 +78,19 @@ class Register extends React.Component {
                             onChange={this.handleChange} 
                             className="form-control" 
                             name="password"
+                            required
                         />
                     </div>
                     <div className="text-center">
                         <button className="btn btn-outline-light" type="submit">Submit</button>
                     </div>
-                    <button className="btn btn-link" style={back} onClick={this.props.handleClick}><i className="fas fa-arrow-left float-left"/></button>
+                    <br/>
+                    <button className="btn btn-link" style={back} onClick={this.props.handleClick}>
+                        <i className="fas fa-arrow-left float-left"/>
+                    </button>
+                    <span className="float-right">
+                        {this.state.message}
+                    </span>
                 </form>
             </div>
         )

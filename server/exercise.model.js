@@ -7,7 +7,8 @@ const exerSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        require: true
+        require: true,
+        trim: true
     },
     duration: {
         type: Number,

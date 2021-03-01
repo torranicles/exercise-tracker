@@ -7,7 +7,8 @@ class Login extends React.Component {
         super(props);
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            message: ''
         }
         this.handleUserChange = this.handleUserChange.bind(this);
         this.handlePassChange = this.handlePassChange.bind(this);
@@ -31,6 +32,10 @@ class Login extends React.Component {
             .then(res => {
                 if (res.data.username === this.state.username) {
                     this.props.handleSuccessAuth(res.data);
+                } else {
+                    this.setState({
+                        message: res.data
+                    })
                 }
             })
             .catch(err => console.log("Login error", err))
@@ -45,18 +50,34 @@ class Login extends React.Component {
                 <form onSubmit={this.handleSubmit} className="login">
                     <div className="form-group p-1">
                         <label for="username">Username:</label>
-                        <input onChange={this.handleUserChange} type="text" className="form-control" name="username"/>
+                        <input 
+                        onChange={this.handleUserChange} 
+                        type="text" 
+                        className="form-control" 
+                        name="username"/>
                     </div>
                     <div className="form-group p-1">
                         <label for="password">Password:</label>
-                        <input onChange={this.handlePassChange} type="password" className="form-control" name="password"/>
+                        <input 
+                            onChange={this.handlePassChange} 
+                            type="password" 
+                            className="form-control" 
+                            name="password"/>
                     </div>
+                    <span className="float-right">
+                        {this.state.message}
+                    </span>
+                    <br/>
+                    <br/>
                     <div className="text-center">
                         <button className="btn btn-outline-light" type="submit">Submit</button>
                     </div>
                     <br/>
                     <div className="text-center">
-                        Don't have an account? <button className="btn btn-link" style={text} onClick={this.props.handleClick}>Sign up</button>
+                        Don't have an account? 
+                        <button className="btn btn-link" style={text} onClick={this.props.handleClick}>
+                            Sign up
+                        </button>
                     </div>
                 </form>
             </div>
