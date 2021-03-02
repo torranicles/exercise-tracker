@@ -173,7 +173,7 @@ class Dashboard extends React.Component {
         return (
             <div>
                 <nav className="navbar navbar-expand-md navbar-dark">
-                    <a className="navbar-brand" href="#">Exercise Tracker</a>
+                    <a className="navbar-brand" href="#" style={{fontSize:'2rem'}}>Exercise Tracker</a>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                         <span className="navbar-toggler-icon"></span>
                     </button>

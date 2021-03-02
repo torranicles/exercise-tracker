@@ -1,0 +1,35 @@
+#login-btn {
+    display: none;
+}
+
+
+.head {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 8vw;
+    color: white;
+    text-shadow: -10px 10px black;
+    padding-left: 5%;
+}
+
+@media only screen and (max-width: 768px) {
+    #login-btn {
+        display: inline;
+        margin-top: 30px;
+    }
+    
+    .head {
+        font-size: 17vw;
+        text-align: center;
+        text-shadow: -7px 7px black;
+        padding: 0;
+    }
+
+    .media-container {
+        flex-direction: column;
+        justify-content: center;
+    } 
+
+    .hidden-container {
+        display: none;
+    }
+}

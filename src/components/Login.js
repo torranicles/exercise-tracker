@@ -59,7 +59,7 @@ class Login extends React.Component {
                         className="form-control" 
                         name="username"/>
                     </div>
-                    <div className="form-group p-1">
+                    <div className="form-group p-1 mb-2">
                         <label for="password">Password:</label>
                         <input 
                             onChange={this.handlePassChange} 
@@ -71,16 +71,15 @@ class Login extends React.Component {
                         {this.state.message}
                     </span>
                     <br/>
-                    <br/>
-                    <div className="text-center">
+                    <div className="text-center mt-2">
                         <button className="btn btn-outline-light" type="submit">Submit</button>
                     </div>
                     <br/>
                     <div className="text-center">
                         Don't have an account? 
-                        <button className="btn btn-link" style={text} onClick={this.props.handleClick}>
+                        <span className="signup-btn ml-2" onClick={this.props.handleClick}>
                             Sign up
-                        </button>
+                        </span>
                     </div>
                 </form>
             </div>

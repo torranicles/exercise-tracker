@@ -88,8 +88,8 @@ class Register extends React.Component {
                     </div>
                     <div className="form-group p-1">
                         <label for="password">Password:</label>
-                        <div className="row">
-                            <div className="col-md-11 pr-1">
+                        <div className="row w-100">
+                            <div className="col-11 pr-1">
                                 <input type="password" 
                                     id="password"
                                     onChange={this.handleChange} 
@@ -100,22 +100,22 @@ class Register extends React.Component {
                             </div>
                             {
                                 this.state.view
-                                ? <i className="far fa-eye col-md-1 p-2" onClick={this.handleClick}/>
-                                : <i className="far fa-eye-slash col-md-1 p-2" onClick={this.handleClick}/>
+                                ? <i className="far fa-eye col-1 p-2" onClick={this.handleClick}/>
+                                : <i className="far fa-eye-slash col-1 p-2" onClick={this.handleClick}/>
                             }
                             
                         </div>
                     </div>
-                    <div className="text-center">
+                    <div className="text-center mb-2">
                         <button className="btn btn-outline-light" type="submit">Submit</button>
                     </div>
+                    <span className="text-danger float-right message">
+                            {this.state.message}
+                    </span>
                     <br/>
                     <button className="btn btn-link" style={back} onClick={this.props.handleClick}>
                         <i className="fas fa-arrow-left float-left"/>
                     </button>
-                    <span className="float-right text-danger">
-                        {this.state.message}
-                    </span>
                 </form>
             </div>
         )
