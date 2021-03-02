@@ -9,10 +9,12 @@ class Register extends React.Component {
             last_name: '',
             username: '',
             password: '',
-            message: ''
+            message: '',
+            view: false
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
     handleChange(e) {
         this.setState({
@@ -34,6 +36,18 @@ class Register extends React.Component {
                 }
             })
             .catch(err => console.log("Registration error", err))
+    }
+
+    handleClick() {
+        let pass = document.getElementById('password')
+        this.setState({
+            view: !this.state.view
+        });
+        if (!this.state.view) {
+            pass.type = 'text'
+        } else {
+            pass.type = 'password'
+        }
     }
 
     render() {
@@ -74,12 +88,23 @@ class Register extends React.Component {
                     </div>
                     <div className="form-group p-1">
                         <label for="password">Password:</label>
-                        <input type="password" 
-                            onChange={this.handleChange} 
-                            className="form-control" 
-                            name="password"
-                            required
-                        />
+                        <div className="row">
+                            <div className="col-md-11 pr-1">
+                                <input type="password" 
+                                    id="password"
+                                    onChange={this.handleChange} 
+                                    className="form-control" 
+                                    name="password"
+                                    required
+                                />
+                            </div>
+                            {
+                                !this.state.view
+                                ? <i className="far fa-eye col-md-1 p-2" onClick={this.handleClick}/>
+                                : <i className="far fa-eye-slash col-md-1 p-2" onClick={this.handleClick}/>
+                            }
+                            
+                        </div>
                     </div>
                     <div className="text-center">
                         <button className="btn btn-outline-light" type="submit">Submit</button>

@@ -229,7 +229,7 @@ class Dashboard extends React.Component {
                                     </div>
                                     <div className="d-none" id="confirm-delete">
                                         <button className="btn btn-outline-danger mx-3" onClick={this.handleDelete}>Confirm</button>
-                                        <span onClick={this.cancelDelete} className="text-white">Cancel</span>
+                                        <button onClick={this.cancelDelete} className="btn btn-link text-white">Cancel</button>
                                     </div>
                                 </div>
                             </div>

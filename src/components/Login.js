@@ -16,13 +16,15 @@ class Login extends React.Component {
     }
     handleUserChange(e) {
         this.setState({
-            username: e.target.value
+            username: e.target.value,
+            message: ''
         })
     }
 
     handlePassChange(e) {
         this.setState({
-            password: e.target.value
+            password: e.target.value,
+            message: ''
         })
     }
 
