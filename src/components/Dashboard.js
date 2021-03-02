@@ -1,8 +1,8 @@
 import React from 'react'
 import '../styles/Dashboard.css'
 import axios from 'axios'
-import Loader from './Loader'
 import AddOrDelete from './AddOrDelete'
+import PulseLoader from "react-spinners/PulseLoader";
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -16,7 +16,8 @@ class Dashboard extends React.Component {
             successMessage: null,
             failMessage: null,
             loading: true,
-            exercises: []
+            exercises: [],
+            noLogs: false,
         }
         this.handleNewSubmit = this.handleNewSubmit.bind(this);
         this.handleEditSubmit = this.handleEditSubmit.bind(this);
@@ -150,6 +151,12 @@ class Dashboard extends React.Component {
     getExercises() {
         axios.get('/exercise/log')
         .then(res => {
+            if (!this.state.exercises) {
+                this.setState({
+                    noLogs: true
+                })
+            }
+
             this.setState({
                 exercises: res.data.log,
                 loading: false,
@@ -163,8 +170,6 @@ class Dashboard extends React.Component {
 
     render() {
         const {description, duration, date, newSubmit, loading, successMessage, failureMessage, exercises} = this.state;
-        
-        console.log(description, duration, date)
         return (
             <div>
                 <nav className="navbar navbar-expand-md navbar-dark">
@@ -186,9 +191,11 @@ class Dashboard extends React.Component {
                             <div className="container-md justify-content-center flex-column w-100 p-3 data-container">
                                 {
                                     loading 
-                                    ? <Loader/>
+                                    ?   <div className="d-flex align-items-center justify-content-center h-100">
+                                            <PulseLoader color={'white'}/>
+                                        </div>
                                     :
-                                    exercises
+                                    exercises.length
                                     ? exercises.map(el => 
                                         <div className="mini-container m-4 row p-3" key={el._id}>
                                             <div className="col-md-11 p-0">
@@ -211,7 +218,13 @@ class Dashboard extends React.Component {
                                             </div>
                                         </div>
                                     )
-                                    : null
+                                    :   <div className="d-flex align-items-center justify-content-center h-100 text-center text-white">
+                                            <p className="lead">
+                                                No exercise found. 
+                                                <br/>
+                                                Add exercise to start tracking your routine.
+                                            </p>
+                                        </div>
                                 }
                             </div>
                             <div className="row m-0 pt-4 bg-dark p-3">
@@ -225,7 +238,11 @@ class Dashboard extends React.Component {
                                 </div>
                                 <div className="col-md-6 d-flex justify-content-center">
                                     <div className="text-white">
-                                        {successMessage}
+                                        {
+                                        successMessage == "Exercise deleted"
+                                        ? successMessage
+                                        : null
+                                        }
                                     </div>
                                     <div className="d-none" id="confirm-delete">
                                         <button className="btn btn-outline-danger mx-3" onClick={this.handleDelete}>Confirm</button>
