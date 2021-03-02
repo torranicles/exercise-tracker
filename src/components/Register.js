@@ -99,7 +99,7 @@ class Register extends React.Component {
                                 />
                             </div>
                             {
-                                !this.state.view
+                                this.state.view
                                 ? <i className="far fa-eye col-md-1 p-2" onClick={this.handleClick}/>
                                 : <i className="far fa-eye-slash col-md-1 p-2" onClick={this.handleClick}/>
                             }
