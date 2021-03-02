@@ -186,7 +186,7 @@ class Dashboard extends React.Component {
                     </div>  
                 </nav>
                 <br/>
-                <div className="container-md w-50 view-container d-flex justify-content-center">
+                <div className="container-md view-container d-flex justify-content-center">
                     <div className="container-md w-100 p-0">
                             <div className="container-md justify-content-center flex-column w-100 p-3 data-container">
                                 {
@@ -236,7 +236,7 @@ class Dashboard extends React.Component {
                                         data-target="#AddOrEdit">Add exercise</button>
                                     <button className="btn btn-danger" onClick={this.confirmDelete}>Delete all</button>
                                 </div>
-                                <div className="col-md-6 d-flex justify-content-center">
+                                <div className="col-md-6 d-flex justify-content-center del-container">
                                     <div className="text-white">
                                         {
                                         successMessage == "Exercise deleted"
@@ -244,10 +244,12 @@ class Dashboard extends React.Component {
                                         : null
                                         }
                                     </div>
-                                    <div className="d-none" id="confirm-delete">
+                                    <div className="d-none mt-2" id="confirm-delete">
                                         <button className="btn btn-outline-danger mx-3" onClick={this.handleDelete}>Confirm</button>
                                         <button onClick={this.cancelDelete} className="btn btn-link text-white">Cancel</button>
                                     </div>
+                                    <br/>
+                                    <br/>
                                 </div>
                             </div>
                             <AddOrDelete
