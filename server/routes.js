@@ -20,7 +20,7 @@ module.exports = (app) => {
 
     app.route('/auth/github/callback')
         .get(passport.authenticate('github', {
-            successRedirect: '/dashboard'
+            successRedirect: 'http://localhost:3000/dashboard'
         })
     )
     

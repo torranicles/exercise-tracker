@@ -16,30 +16,27 @@ module.exports = (app) => {
     passport.use(new GitHubStrategy({
         clientID: process.env.GITHUB_CLIENT_ID,
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
-        callbackURL: 'http://localhost:3000/auth/github/callback'
+        callbackURL: 'http://localhost:5000/auth/github/callback'
     }, (accessToken, refreshToken, profile, cb) => {
+        console.log(profile)
+        let full_name = profile.displayName.split(' ');
+        let first_name = full_name[0];
+        let last_name = full_name[full_name.length - 1];
         User.findOneAndUpdate({
-            id: profile.id
+            username: profile.username
         }, {
-            $setOnInsert: {
-                id: profile.id,
-                name: profile.displayName || 'John Doe',
-                photo: profile.photos[0].value || '',
-                email: Array.isArray(profile.emails)
-                    ? profile.emails[0].value
-                    : 'No public email',
-                created_on: new Date(),
-                provider: profile.provider || ''
-            }, $set: {
-                last_login: new Date()
-            }, $inc: {
-                login_count: 1
-            }
+            first_name: first_name|| 'John',
+            last_name: last_name || 'Doe',
+            username: profile.username
         }, {
             upsert: true,
             new: true
         }, (err, doc) => {
-            return cb(null, doc.value)
+            if (err) {
+                console.log(err)
+            }
+            console.log(doc)
+            return cb(null, doc)
         })
     }));
     passport.use(new LocalStrategy(

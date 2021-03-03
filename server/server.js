@@ -6,8 +6,6 @@ const cors = require('cors');
 const passport = require('passport');
 const connection = require('./connection');
 const session = require('express-session');
-const cookieParser = require('cookie-parser');
-const flash = require('connect-flash')
 const routes = require('./routes');
 const auth = require('./auth');
 const app = express();
@@ -22,7 +20,6 @@ app.use(session({
     },
     key: 'express.sid'
 }))
-app.use(flash())
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.json());
