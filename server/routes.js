@@ -118,25 +118,22 @@ module.exports = (app) => {
                             : new Date(date)
                     }).save((err, exercise) => {
                         if (err) {
-                            if (err.name == 'CastError' && err['message'].includes('Cast to Number')) {
+                            console.log(err)
+                            if (err.name == 'ValidationError' && err['message'].includes('Cast to Number')) {
                                 return res.send({
                                     failureMessage: "Invalid duration"
                                 })
-                            } else if (err['message'].includes('Cast to Date')) {
+                            } else if (err['message'].includes('Cast to date')) {
                                 return res.send({
                                     failureMessage: "Invalid date"
                                 })
-                            } else if (err.name == 'ValidationError') {
-                                res.send({
-                                    failureMessage: Object.values(err.errors).map(val => val.message)
-                                })
-                            }
-                            res.status(500)
+                            } 
+                            return res.status(500)
                                 .send({
                                     failureMessage: "An error occured, please try again"
                                 })
                         }
-                        res.send({
+                        return res.send({
                             message: "New exercise added!"
                         })
                     })

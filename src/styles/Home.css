@@ -11,6 +11,7 @@
     padding-left: 5%;
 }
 
+
 @media only screen and (max-width: 768px) {
     #login-btn {
         display: inline;
@@ -33,3 +34,10 @@
         display: none;
     }
 }
+
+@media only screen and (max-width: 600px) {
+    .row {
+        flex-direction: row;
+    }
+}
+

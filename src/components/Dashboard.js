@@ -55,6 +55,7 @@ class Dashboard extends React.Component {
                 id: this.state._id
             }
         }).then(res => {
+            console.log(res, 'edit')
             if (res.data.message) { //Failure
                 this.setState({
                     failureMessage: res.data.message
@@ -127,6 +128,7 @@ class Dashboard extends React.Component {
         e.preventDefault();
         axios.post('/exercise/add', this.state)
             .then(res => {
+                console.log(res, 'new')
                 if (res.data.failureMessage) { //Failure
                     this.setState({
                         failureMessage: res.data.failureMessage
@@ -198,13 +200,13 @@ class Dashboard extends React.Component {
                                     exercises.length
                                     ? exercises.map(el => 
                                         <div className="mini-container m-4 row p-3" key={el._id}>
-                                            <div className="col-md-11 p-0">
+                                            <div className="col-11 p-0 pr-3">
                                                 <h3>{el.description}</h3>
                                                 {el.duration} mins.
                                                 <br/>
                                                 {new Date(el.date).toDateString()}
                                             </div>
-                                            <div className="col-md-1 p-0 d-flex flex-column justify-content-around align-items-center">
+                                            <div className="col-1 p-0 d-flex flex-column justify-content-around align-items-center">
                                                 <i 
                                                     className="far fa-edit" 
                                                     data-toggle="modal" 
@@ -227,7 +229,7 @@ class Dashboard extends React.Component {
                                         </div>
                                 }
                             </div>
-                            <div className="row m-0 pt-4 bg-dark p-3">
+                            <div className="row m-0 pt-4 bg-dark p-3 row-600">
                                 <div className="col-md-6 btn-group">
                                     <button 
                                         onClick={this.handleAdd}
