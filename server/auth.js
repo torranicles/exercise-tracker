@@ -16,7 +16,7 @@ module.exports = (app) => {
     passport.use(new GitHubStrategy({
         clientID: process.env.GITHUB_CLIENT_ID,
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
-        callbackURL: 'http://localhost:5000/auth/github/callback'
+        callbackURL: 'https://acts-tracker.herokuapp.com/auth/github/callback'
     }, (accessToken, refreshToken, profile, cb) => {
         console.log(profile)
         let full_name = profile.displayName.split(' ');
