@@ -8,11 +8,13 @@ class Login extends React.Component {
         this.state = {
             username: '',
             password: '',
-            message: ''
+            message: '',
+            view: false
         }
         this.handleUserChange = this.handleUserChange.bind(this);
         this.handlePassChange = this.handlePassChange.bind(this);
         this.handleSubmit =this.handleSubmit.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
     handleUserChange(e) {
         this.setState({
@@ -43,6 +45,18 @@ class Login extends React.Component {
             .catch(err => console.log("Login error", err))
     }
 
+    handleClick() {
+        let pass = document.getElementById('password')
+        this.setState({
+            view: !this.state.view
+        });
+        if (!this.state.view) {
+            pass.type = 'text'
+        } else {
+            pass.type = 'password'
+        }
+    }
+
     render() {
         const text ={
             textDecoration: "none",
@@ -62,11 +76,20 @@ class Login extends React.Component {
                     </div>
                     <div className="form-group p-1 mb-2">
                         <label for="password">Password:</label>
-                        <input 
-                            onChange={this.handlePassChange} 
-                            type="password" 
-                            className="form-control" 
-                            name="password"/>
+                        <div className="row w-100">
+                            <div className="col-11 pr-1">
+                                <input 
+                                    onChange={this.handlePassChange} 
+                                    type="password" 
+                                    className="form-control" 
+                                    name="password"/>
+                            </div>
+                            {
+                                this.state.view
+                                ? <i className="far fa-eye col-1 p-2" onClick={this.handleClick}/>
+                                : <i className="far fa-eye-slash col-1 p-2" onClick={this.handleClick}/>
+                            }
+                        </div>
                     </div>
                     <span className="float-right text-danger">
                         {this.state.message}
