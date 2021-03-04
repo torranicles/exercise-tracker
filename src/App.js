@@ -4,7 +4,6 @@ import Home from './components/Home'
 import Dashboard from './components/Dashboard'
 import axios from 'axios'
 import ProtectedRoute from './components/protected.route'
-import { withRouter } from "react-router"
 import Loader from './components/Loader'
 
 class App extends React.Component {
@@ -24,7 +23,6 @@ class App extends React.Component {
             username: data.username,
             logged_in: true
         })
-        console.log(this.state,"2")
     }
 
     handleLogout() {
@@ -37,7 +35,7 @@ class App extends React.Component {
                 }
             })
             .catch(err => {
-                console.log(err)
+                console.log("Logout error", err)
             })
     }
     
@@ -56,7 +54,7 @@ class App extends React.Component {
                     });
                 }
             })
-            .catch(err => console.log("Login status", err)) //TO DO: Render error message if error is present/exit from load if err
+            .catch(err => console.log("Login status", err)) 
     }
 
     componentDidMount(){
@@ -89,4 +87,4 @@ class App extends React.Component {
     }
 }
 
-export default withRouter(App);
+export default App;

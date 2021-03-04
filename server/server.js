@@ -10,7 +10,6 @@ const routes = require('./routes');
 const auth = require('./auth');
 const app = express();
 
-app.use(cors());
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: true,
@@ -24,10 +23,16 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use(express.static(path.resolve(__dirname + '/.././build')));
+
 connection.db.once('open', () => {
     console.log('connected')
     auth(app)
     routes(app)
+    app.get('/*', (req, res) => {
+        res.sendFile(path.resolve(__dirname + '/.././build/index.html'));
+    });
 })
 app.listen(5000, () => {
     console.log("Listening to port " + 5000);

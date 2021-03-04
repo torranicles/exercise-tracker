@@ -26,7 +26,6 @@ class Register extends React.Component {
         e.preventDefault();
         axios.post('/api/register/', this.state)
             .then(res => {
-                console.log(res)
                 if (res.data.username == this.state.username) {
                     this.props.handleSuccessAuth(res.data)
                 } else {

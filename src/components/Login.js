@@ -76,7 +76,7 @@ class Login extends React.Component {
                         <button className="btn btn-outline-light" type="submit">Submit</button>
                     </div>
                     <div className="text-center mx-1 mt-3">
-                        <a href="http://localhost:5000/auth/github" className="text-decoration-none btn btn-outline-light w-100">
+                        <a href="/auth/github" className="text-decoration-none btn btn-outline-light w-100">
                             Sign in with Github <i className="fab fa-github ml-2"/>
                         </a>
                     </div>

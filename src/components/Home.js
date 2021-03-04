@@ -23,7 +23,6 @@ class Home extends React.Component {
         this.setState({
             viewReg: !this.state.viewReg
         })
-        console.log(this.state)
     }
 
     componentDidMount() {

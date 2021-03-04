@@ -20,10 +20,10 @@ module.exports = (app) => {
 
     app.route('/auth/github/callback')
         .get(passport.authenticate('github', {
-            successRedirect: 'http://localhost:3000/dashboard'
+            successRedirect: 'http://localhost:5000/dashboard'
         })
     )
-    
+
     app.get('/logged_in', ensureAuthenticated, (req, res) => {
         res.send({
             logged_in: true
@@ -53,7 +53,6 @@ module.exports = (app) => {
                 .save((err, doc) => {
                     if (err) {
                         if (err.name == 'ValidationError') {
-                            console.log(Object.values(err.errors).map(val => val.message))
                             return res.send(Object.values(err.errors).map(val => val.message))
                         }
                         return res.status(500)

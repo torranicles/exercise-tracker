@@ -8,10 +8,8 @@ import { BrowserRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 
 ReactDOM.render(
-  <React.StrictMode><BrowserRouter>
-  <App />
-</BrowserRouter> 
-{/* browserrouter irrelevant */}
+  <React.StrictMode>
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );

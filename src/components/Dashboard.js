@@ -55,7 +55,6 @@ class Dashboard extends React.Component {
                 id: this.state._id
             }
         }).then(res => {
-            console.log(res, 'edit')
             if (res.data.message) { //Failure
                 this.setState({
                     failureMessage: res.data.message
@@ -128,7 +127,6 @@ class Dashboard extends React.Component {
         e.preventDefault();
         axios.post('/exercise/add', this.state)
             .then(res => {
-                console.log(res, 'new')
                 if (res.data.failureMessage) { //Failure
                     this.setState({
                         failureMessage: res.data.failureMessage
@@ -158,11 +156,12 @@ class Dashboard extends React.Component {
                     noLogs: true
                 })
             }
-
-            this.setState({
-                exercises: res.data.log,
-                loading: false,
-            });
+            if (res.data.log) {
+                this.setState({
+                    exercises: res.data.log,
+                    loading: false,
+                });
+            }
         })
     }
 
