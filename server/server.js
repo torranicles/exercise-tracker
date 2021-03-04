@@ -34,6 +34,6 @@ connection.db.once('open', () => {
         res.sendFile(path.resolve(__dirname + '/.././build/index.html'));
     });
 })
-app.listen(process.env.PORT || 5000, () => {
-    console.log("Listening to port " + process.env.PORT || 5000);
+app.listen(process.env.PORT, () => {
+    console.log("Listening to port " + process.env.PORT);
 })
