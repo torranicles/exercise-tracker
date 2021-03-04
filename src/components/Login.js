@@ -79,6 +79,7 @@ class Login extends React.Component {
                         <div className="row w-100">
                             <div className="col-11 pr-1">
                                 <input 
+                                    id="password"
                                     onChange={this.handlePassChange} 
                                     type="password" 
                                     className="form-control" 
