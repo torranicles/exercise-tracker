@@ -14,7 +14,7 @@ class Dashboard extends React.Component {
             _id: null,
             newSubmit: null,
             successMessage: null,
-            failMessage: null,
+            failureMessage: null,
             loading: true,
             exercises: [],
             noLogs: false,
@@ -130,6 +130,11 @@ class Dashboard extends React.Component {
                 if (res.data.failureMessage) { //Failure
                     this.setState({
                         failureMessage: res.data.failureMessage
+                    });
+                    setTimeout(() => {
+                        this.setState({
+                            failureMessage: null
+                        })
                     })
                 } else {  //Success
                     this.getExercises();
