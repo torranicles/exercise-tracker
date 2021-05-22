@@ -135,7 +135,7 @@ class Dashboard extends React.Component {
                         this.setState({
                             failureMessage: null
                         })
-                    })
+                    }, 2500)
                 } else {  //Success
                     this.getExercises();
                     this.setState({
